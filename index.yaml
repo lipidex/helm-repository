@@ -3,12 +3,12 @@ entries:
   kafka:
   - apiVersion: v2
     appVersion: 4.1.1-rc2
-    created: "2025-11-18T10:17:21.864148676Z"
+    created: "2025-11-18T10:18:55.370410142Z"
     description: Helm chart for Apache Kafka
-    digest: 9c5c0a89d85006b6be5ce27bf3ec22f7f1134afe7ccb6eaad3cc395c84f4943b
+    digest: 9741499d22c607a0bb4bbd4210bf9c7773b55b6f03a86ae2d0749e992e1cf52e
     name: kafka
     type: application
     urls:
     - charts/kafka-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-18T10:17:21.86355053Z"
+generated: "2025-11-18T10:18:55.369906799Z"
