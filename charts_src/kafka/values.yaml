@@ -1,18 +1,23 @@
 storageClassName: gp3-csi
 
 kafka:
-  image: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/kafka
+  image: bitnamilegacy/kafka:3.7.1-debian-12-r9
   pullSecrets:
     - name: aws-cred
-  port: 9092
-  replicas: 1
   storageSize: 5Gi
-  cpu: "500m"
-  memory: "3Gi"
   failureThreshold: 15
   initialDelaySeconds: 1800
   periodSeconds: 1800
   timeoutSeconds: 10
+
+env:
+resources:
+  requests:
+    cpu: "500m"
+    memory: "2Gi"
+  limits:
+    cpu: "2"
+    memory: "4Gi"
 
 topics:
   enabled: true
