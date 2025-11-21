@@ -1,0 +1,4 @@
+apiVersion: v2
+description: Helm chart for Oracle DB container
+name: oracle
+version: 0.1.0

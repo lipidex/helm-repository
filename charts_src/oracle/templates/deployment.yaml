@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oracle-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oracle-db
+  template:
+    metadata:
+      labels:
+        app: oracle-db
+    spec:
+      securityContext:
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+      initContainers:
+        - name: copy-file
+          image: quay.io/leonim/tools:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - cp /smdc/dump/empty-smdc.dmp.gz /dump/empty-smdc.dmp.gz && gunzip /dump/empty-smdc.dmp.gz
+          volumeMounts:
+            - name: shared-dump
+              mountPath: /dump
+      containers:
+        - name: oracle-db
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.service.targetPort }}
+          env:
+            - name: ORACLE_EDITION
+              value: standard
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+            {{- end }}
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+          volumeMounts:
+            - name: oradata
+              mountPath: /opt/oracle/oradata
+            - name: shared-dump
+              mountPath: /dump
+            - name: startup-scripts
+              mountPath: /opt/oracle/scripts/startup
+          readinessProbe:
+            exec:
+              command: ["/bin/sh", "-c", "if [ -f $ORACLE_BASE/checkDBLockStatus.sh ]; then $ORACLE_BASE/checkDBLockStatus.sh ; else $ORACLE_BASE/checkDBStatus.sh; fi"]
+            initialDelaySeconds: 20
+            periodSeconds: 40
+            timeoutSeconds: 20
+      volumes:
+        - name: oradata
+          persistentVolumeClaim:
+            claimName: oracle-db-pvc
+        - name: shared-dump
+          emptyDir: {}
+        - name: startup-scripts
+          configMap:
+            name: oracle-startup-scripts
+            defaultMode: 0755
+

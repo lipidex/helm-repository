@@ -1,0 +1,34 @@
+image:
+  repository: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/oracle
+  tag: 1013480000 # latest for this specific id
+
+service:
+  type: ClusterIP
+  port: 1521
+  targetPort: 1521
+
+resources:
+  limits:
+    cpu: "2"
+    memory: "6Gi"
+  requests:
+    cpu: "1"
+    memory: "4Gi"
+
+securityContext:
+  runAsUser: 1013480000
+  fsGroup: 1013480000
+
+env:
+  ORACLE_CHARACTERSET: WE8ISO8859P1
+  ORACLE_MEM: 4000
+  INIT_CPU_COUNT: 2
+  ORACLE_PWD:
+  ORACLE_PDB:
+  PDB_USER:
+  PDB_USER_PASSWORD:
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: 
