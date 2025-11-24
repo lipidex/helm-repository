@@ -49,5 +49,5 @@ securityContext:
   allowPrivilegeEscalation: false
 
 resource:
-  cpu: "1024m"
-  memory: "3Gi"
+  cpu: "100m"
+  memory: "1Gi"
