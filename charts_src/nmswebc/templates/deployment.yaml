@@ -20,7 +20,7 @@ spec:
           image: {{ .Values.app.image }}
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: {{ .Values.app.port }}
+            - containerPort: {{ .Values.app.containerPort }}
           volumeMounts:
             - name: config-volume
               mountPath: /usr/local/tomcat/conf
