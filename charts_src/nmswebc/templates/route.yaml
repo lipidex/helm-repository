@@ -1,0 +1,12 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: tomcat-app-route
+spec:
+  to:
+    kind: Service
+    name: {{ .Values.app.name }}
+  port:
+    targetPort: http
+  tls:
+    termination: edge
