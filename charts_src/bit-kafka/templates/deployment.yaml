@@ -67,10 +67,6 @@ spec:
               mountPath: /var/lib/kafka
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      imagePullSecrets:
-        {{- range .Values.image.pullSecrets }}
-        - name: {{ .name }}
-        {{- end }}
       volumes:
         - name: config
           configMap:
