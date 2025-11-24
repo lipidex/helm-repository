@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.app.name }}-config
+data:
+  nms5wiC.properties: |
+    serversList=(SERVER_NAME;{{ .Values.kafka.kafka_broker }}:{{ .Values.kafka.kafka_port }};10.11.11.11;{{ .Values.webs.webs_url }}:{{ .Values.webs.webs_port }};https;Linux)
+    server=(SERVER_NAME;SERVER_NAME;SERVER_NAME;SERVER_NAME;{{ .Values.app.containerPort }};https)
+    ws.connect.timeout=600000
+    ws.request.timeout=600000
+    ws.skipTrustCheck=true
+    ws.notify.consumer.port=443
+    ws_local_server.proto=https
+    ws_local_server.port={{ .Values.webs.webs_port }}
+    notify.consumer.queue.items=10
+    notify.consumer.queue.wait.min=25
+    notify.consumer.queue.wait.max=50
+    x11.startAtLogin=1
+    ws.notify.kafkaBroker={{ .Values.kafka.kafka_broker }}:{{ .Values.kafka.kafka_port }}
+    alcp2eTelnetEnabled=true
+    alcp2TelnetEnabled=true
+    alcp2eXmlProvisioningEnabled=true
+
+  nms5wiN.properties: |
+    db.ipAddress={{ .Values.db.ORACLE_HOST }}
+
+  nms5pwd.properties: |
+    thrift.timeout=300000
+    thrift.nmsPwdPort=13201
+    db.address={{ .Values.db.ORACLE_HOST }}

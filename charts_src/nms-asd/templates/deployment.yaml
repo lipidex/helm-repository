@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+    spec:
+      securityContext:
+        runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
+        allowPrivilegeEscalation: {{ .Values.securityContext.allowPrivilegeEscalation }}
+        
+       initContainers:
+        - name: extract-tns-asd
+          image: alpine
+          command: ["sh", "-c", "tar -xzf /tmp/tns.tgz -C /usr/share/instantclient/tns"]
+          volumeMounts:
+             - name: tns-config-asd
+               mountPath: /tmp
+             - name: tns-extracted
+               mountPath: /usr/share/instantclient/tns
+              
+      containers:
+        - name: {{ .Values.app.name }}
+          image: {{ .Values.app.image }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: {{ .Values.app.port }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app
+              readOnly: true
+            - name: tns-extracted
+              mountPath: /usr/share/instantclient/tns
+          resources:
+            requests:
+              cpu: {{ .Values.resource.cpu }}
+              memory: {{ .Values.resource.memory }}
+            limits:
+              cpu: {{ .Values.resource.cpu }}
+              memory: {{ .Values.resource.memory }}
+       ############
+      imagePullSecrets:
+        {{- range .Values.app.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}        
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Values.app.name }}-config
+        - name: tns-config
+          secret:
+            secretName: tns-config-asd
+        - name: tns-extracted
+          emptyDir: {}
+          

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+    spec:
+      securityContext:
+        runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
+        allowPrivilegeEscalation: {{ .Values.securityContext.allowPrivilegeEscalation }}
+      containers:
+        - name: {{ .Values.app.name }}
+          image: {{ .Values.app.image }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: {{ .Values.app.port }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/local/tomcat/conf
+              readOnly: true
+          env:
+            # Example 1: Static environment variable from values.yaml
+            - name: ASD_PORT
+              value: {{ .Values.asd.asd_port | quote }}
+          resources:
+            requests:
+              cpu: {{ .Values.resource.cpu }}
+              memory: {{ .Values.resource.memory }}
+            limits:
+              cpu: {{ .Values.resource.cpu }}
+              memory: {{ .Values.resource.memory }}
+      imagePullSecrets:
+        {{- range .Values.app.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Values.app.name }}-config
+        - name: webc-pvc
+          persistentVolumeClaim:
+            claimName: webc-pvc
+          
