@@ -3,7 +3,7 @@ entries:
   bit-kafka:
   - apiVersion: v2
     appVersion: 3.7.1-debian-12-r9
-    created: "2025-11-24T10:30:51.445413763Z"
+    created: "2025-11-24T10:41:41.483311362Z"
     description: Helm chart for Bitnami Kafka
     digest: f23c254454fcc0f730bda7518e2d73a023796f33ee2be6efbb59fe7fba30d105
     name: bit-kafka
@@ -13,11 +13,11 @@ entries:
     version: 0.1.0
   oracle:
   - apiVersion: v2
-    created: "2025-11-24T10:30:51.445762299Z"
+    created: "2025-11-24T10:41:41.483626138Z"
     description: Helm chart for Oracle DB container
-    digest: 749b413d287ee6a90a4de8a2ee0c1d05d5da43f09065417a7a27a2fc5d6e6efd
+    digest: 20f100cd792957d595cfba68046fbf1cb03d12f53f5d191ffa54f31dd4586591
     name: oracle
     urls:
     - charts/oracle-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-24T10:30:51.444899472Z"
+generated: "2025-11-24T10:41:41.482804072Z"
