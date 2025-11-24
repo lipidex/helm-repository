@@ -1,5 +1,5 @@
 apiVersion: v2
-name: nms_asd
+name: nms-asd
 description: A Helm chart for NMS ASD Service
 
 # A chart can be either an 'application' or a 'library' chart.
