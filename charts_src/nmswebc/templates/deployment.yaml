@@ -23,11 +23,20 @@ spec:
           ports:
             - containerPort: {{ .Values.app.containerPort }}
           volumeMounts:
-            - name: config-volume
-              mountPath: /usr/local/tomcat/conf
-              #readOnly: true
             - name: webc-pvc
               mountPath: /usr/local/tomcat/logs
+              
+            - name: config-volume
+              mountPath: /usr/local/tomcat/conf/nms5wiC.properties
+              subPath: nms5wiC.properties
+
+            - name: config-volume
+              mountPath: /usr/local/tomcat/conf/nms5wiN.properties
+              subPath: nms5wiN.properties
+
+            - name: config-volume
+              mountPath: /usr/local/tomcat/conf/nms5pwd.properties
+              subPath: nms5pwd.properties
           env:
             # Example 1: Static environment variable from values.yaml
             - name: ASD_PORT
