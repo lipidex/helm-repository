@@ -2,3 +2,10 @@ apiVersion: v2
 description: Helm chart for NotificationStreamer deamon
 name: notification-streamer
 version: 0.1.0
+dependencies:
+  - name: bit-kafka
+    version: 0.1.0
+    repository: "file://../../charts_src/bit-kafka"
+  - name: oracle
+    version: 0.1.0
+    repository: "file://../../charts_src/oracle"
