@@ -1,0 +1,14 @@
+apiVersion: v2
+description: Helm chart for NotificationStreamer deamon
+name: mini-nms
+version: 0.1.0
+dependencies:
+  - name: bit-kafka
+    version: 0.1.0
+    repository: "file://../bit-kafka"
+  - name: oracle
+    version: 0.1.0
+    repository: "file://../oracle"
+  - name: notification-streamer
+    version: 0.1.0
+    repository: "file://../notification-streamer"
