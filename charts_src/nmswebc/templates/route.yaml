@@ -7,6 +7,6 @@ spec:
     kind: Service
     name: {{ .Values.app.name }}
   port:
-    targetPort: http
+    targetPort: tcp
   tls:
-    termination: edge
+    termination: passthrough
