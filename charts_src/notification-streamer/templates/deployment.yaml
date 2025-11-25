@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-streamer
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app.kubernetes.io/name: notification-streamer
+    app.kubernetes.io/part-of: {{ $.Chart.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: notification-streamer
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: notification-streamer
+    spec:
+      volumes:
+        {{- if $.Values.tnsAdmin.enabled }}
+        - name: tns-secret
+          secret:
+            secretName: {{ $.Values.tnsAdmin.secretName }}
+        {{- end }}
+      containers:
+        - name: notification-streamer
+          image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          envFrom:
+            {{- if $.Values.globalEnv.enabled }}
+            - configMapRef:
+                name: {{ default "global-env" $.Values.globalEnv.name }}
+            {{- end }}
+          env:
+            {{- range $key, $value := .env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          {{- if $.Values.tnsAdmin.enabled }}
+          volumeMounts:
+            - name: tns-secret
+              mountPath:  {{ $.Values.tnsAdmin.mountPath }} 
+              readOnly: true
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          livenessProbe:
+            exec:
+              command:
+                - /app/healthcheck.sh
+                - NotificationStreamer
+                {{- toYaml .Values.liveness | nindent 14 }}
+      imagePullSecrets:
+        {{- range .Values.image.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}

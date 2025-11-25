@@ -3,7 +3,7 @@ entries:
   bit-kafka:
   - apiVersion: v2
     appVersion: 3.7.1-debian-12-r9
-    created: "2025-11-25T14:35:51.9595424+05:30"
+    created: "2025-11-25T12:46:59.661557497Z"
     description: Helm chart for Bitnami Kafka
     digest: 04b6d06663a313f753b147fa937df706e01c2c14a312f4749c04ff31e0f35ee8
     name: bit-kafka
@@ -14,7 +14,7 @@ entries:
   nmswebc:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-11-25T14:35:51.9600783+05:30"
+    created: "2025-11-25T12:46:59.66190873Z"
     description: A Helm chart for Kubernetes
     digest: 39ff4f2d4e8b26f3dcb79e48cada0dedea2f8f713d1a77ccebe010e1f3d30ca0
     name: nmswebc
@@ -22,13 +22,22 @@ entries:
     urls:
     - charts/nmswebc-0.1.0.tgz
     version: 0.1.0
+  notification-streamer:
+  - apiVersion: v2
+    created: "2025-11-25T12:46:59.662188116Z"
+    description: Helm chart for NotificationStreamer deamon
+    digest: 47613c4d76c9cf9e590d488927e74ec76dead7ff6b89ce5a487d4fab08ecdb48
+    name: notification-streamer
+    urls:
+    - charts/notification-streamer-0.1.0.tgz
+    version: 0.1.0
   oracle:
   - apiVersion: v2
-    created: "2025-11-25T14:35:51.9627172+05:30"
+    created: "2025-11-25T12:46:59.662666108Z"
     description: Helm chart for Oracle DB container
     digest: ac2af53940cf8c5eb78214aaf61d24b4835a4e6ec8f8d13d3d66115df32906a4
     name: oracle
     urls:
     - charts/oracle-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-25T14:35:51.9568284+05:30"
+generated: "2025-11-25T12:46:59.660758608Z"

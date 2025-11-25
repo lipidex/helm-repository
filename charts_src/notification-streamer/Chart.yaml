@@ -1,0 +1,4 @@
+apiVersion: v2
+description: Helm chart for NotificationStreamer deamon
+name: notification-streamer
+version: 0.1.0
