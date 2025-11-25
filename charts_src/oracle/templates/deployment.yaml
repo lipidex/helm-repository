@@ -4,6 +4,7 @@ metadata:
   name: oracle-db
 spec:
   replicas: 1
+  minReplicas: 1
   selector:
     matchLabels:
       app: oracle-db
