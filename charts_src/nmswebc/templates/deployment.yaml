@@ -13,9 +13,9 @@ spec:
       labels:
         app: {{ .Values.app.name }}
     spec:
-      securityContext:
-        runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
-        allowPrivilegeEscalation: {{ .Values.securityContext.allowPrivilegeEscalation }}
+      #securityContext:
+        #runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
+        #allowPrivilegeEscalation: {{ .Values.securityContext.allowPrivilegeEscalation }}
       containers:
         - name: {{ .Values.app.name }}
           image: {{ .Values.app.image }}
@@ -25,7 +25,9 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /usr/local/tomcat/conf
-              readOnly: true
+              #readOnly: true
+            - name: webc-pvc
+              mountPath: /usr/local/tomcat/logs
           env:
             # Example 1: Static environment variable from values.yaml
             - name: ASD_PORT
