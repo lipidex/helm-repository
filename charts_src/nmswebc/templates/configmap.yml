@@ -4,8 +4,8 @@ metadata:
   name: {{ .Values.app.name }}-config
 data:
   nms5wiC.properties: |
-    serversList=(SERVER_NAME;{{ .Values.kafka.kafka_broker }}:{{ .Values.kafka.kafka_port }};10.11.11.11;{{ .Values.webs.webs_url }}:{{ .Values.webs.webs_port }};https;Linux)
-    server=(SERVER_NAME;SERVER_NAME;SERVER_NAME;SERVER_NAME;{{ .Values.app.containerPort }};https)
+    serversList=(CIAO_OPENSHIFT;{{ .Values.kafka.kafka_broker }}:{{ .Values.kafka.kafka_port }};10.11.11.11;{{ .Values.webs.webs_url }}:{{ .Values.webs.webs_port }};https;Linux)
+    server=(CIAO_OPENSHIFT;CIAO_OPENSHIFT;CIAO_OPENSHIFT;CIAO_OPENSHIFT;{{ .Values.app.containerPort }};https)
     ws.connect.timeout=600000
     ws.request.timeout=600000
     ws.skipTrustCheck=true
