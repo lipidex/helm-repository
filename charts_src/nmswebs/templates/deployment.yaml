@@ -21,7 +21,7 @@ spec:
          image: alpine
          command: ["sh", "-c", "tar -xzf /tmp/tns.tgz -C /usr/share/instantclient/tns"]
          volumeMounts:
-            - name: tns-config-webs
+            - name: tns-config
               mountPath: /tmp
             - name: tns-extracted
               mountPath: /usr/share/instantclient/tns
@@ -96,7 +96,7 @@ spec:
       volumes:
         - name: webs-configmap
           configMap:
-            name: webs-properties-ConfigMap
+            name: webs-properties-configmap
         - name: webs-pvc
           persistentVolumeClaim:
             claimName: webs-pvc
