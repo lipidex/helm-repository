@@ -1,0 +1,4 @@
+apiVersion: v2
+description: Helm chart for UsersLoginLogout
+name: users-login-logout-service
+version: 0.1.2

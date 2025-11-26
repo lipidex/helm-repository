@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-login-logout-svc
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: users-login-logout-svc
+spec:
+  type: ClusterIP
+  ports:
+  - name: users-login-logout-port
+    port: 41735
+    targetPort: 41735
+  selector:
+      app: users-login-logout

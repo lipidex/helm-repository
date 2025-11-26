@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-login-logout
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users-login-logout
+  template:
+    metadata:
+      labels:
+        app: users-login-logout
+    spec:
+      imagePullSecrets:
+        {{- range .Values.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
+      volumes:
+        {{- if $.Values.tnsAdmin.enabled }}
+        - name: tns-secret
+          secret:
+            secretName: {{ $.Values.tnsAdmin.secretName }}
+        {{- end }}
+      containers:
+      - name: users-login-logout
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        livenessProbe:
+            exec:
+              command:
+                - ps -elf | grep 'UsersLoginLogoutService' | grep -v grep || exit 1
+            failureThreshold: {{ .Values.usersloginlogout.failureThreshold }}
+            initialDelaySeconds: {{ .Values.usersloginlogout.initialDelaySeconds }}
+            periodSeconds: {{ .Values.usersloginlogout.periodSeconds }}
+            timeoutSeconds: {{ .Values.usersloginlogout.timeoutSeconds }}
+        envFrom:
+        {{- if $.Values.globalEnv.enabled }}
+        - configMapRef:
+            name: {{ default "global-env" $.Values.globalEnv.name }}
+        {{- end }}
+        env:
+        - name: HOME
+          value: /tmp
+        {{- if $.Values.tnsAdmin.enabled }}
+        volumeMounts:
+          - name: tns-secret
+            mountPath:  {{ $.Values.tnsAdmin.mountPath }} 
+            readOnly: true
+        {{- end }}
+        resources:
+{{- toYaml .Values.resources | nindent 10 }}
