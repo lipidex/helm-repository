@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webs-properties-ConfigMap
+data:
+  application.properties: |
+    server.port={{ .Values.service.port }}
+    jdbc.driverClassName=oracle.jdbc.OracleDriver
+    jdbc.url=jdbc:oracle:thin:@{{ .Values.db.ORACLE_HOST }}:{{ .Values.db.ORACLE_PORT }}/{{ .Values.db.NMS_DB_NAME }}
+    jdbc.username=${DB_USER}
+    jdbc.password=${DB_PASS}
+    db.useWallet=true
+    authenticationServer.authRequired=true
+    firefoxProfileHomeDir=/home/tomcat/.mozilla
+    spring.kafka.bootstrap-servers={{ .Values.kafka.kafka_broker }}:{{ .Values.kafka.kafka_port }}
+    management.metrics.enable.processor=false
+    server.tomcat.additional-tld-skip-patterns=oraclepki.jar, osdt_core.jar, osdt_cert.jar
+    spring.application.name=nms5wi-nbi-server-provider
+    spring.jackson.serialization.indent_output=true
+    management.endpoints.web.base-path=/actuator
+    management.endpoints.web.exposure.include=*
+    management.endpoint.health.show-details=always
+    management.endpoint.prometheus.enabled=true
+    spring.jmx.enabled=false
+    spring.main.allow-circular-references=true
+    metrics.tags.application=${spring.application.name}
+    ignore.consumer.registration=true
+    whoami=Nobody
+    x11.maxDisplays=10
+    x11.mxdStartPort=13401
+    x11.tunnelStartPort=13501
+    x11.auth=/opt/apache-tomcat/conf/auth.sdb
+    x11.x509Cert=/opt/apache-tomcat/conf/siaecert.crt
+    x11.x509Key=/opt/apache-tomcat/conf/siaekey.crt
+    thrift.timeout=30000
+    thrift.nmsMsdPort=13020
+    thrift.nmsMndPort=13500
+    ws.connect.timeout=60
+    ws.request.timeout=60
+    ws.skipTrustCheck=false
+    ignore.consumer.registration=true
+    sessionsDbCheck=60
+    sessionTimeout=-1
+    sessionTimeoutDelta=10
+    security.pam=false
+    security.authTimeout=30
+    security.fallback=false
+    security.manualNmsUserCreationAllowed=false
+    security.usernameCapitalLettersManaged=false
+    security.osAutomaticUserCreation=false
+    security.pamGroupMandatory=true
+    useLdapGroupCaching=60
+    supportedUserGroups=
+    #authenticationServer.url=https://AUTH_IP:AUTH_PORT/AuthenticationService
+    ucp.minPoolSize=5
+    ucp.maxPoolSize=100
+    ucp.inactiveConnectionTimeout=60
+    ucp.abandonedConnectionTimeout=10
+    ucp.timeToLiveConnectionTimeout=1800
+    ucp.connectionWaitTimeout=10
+    ucp.maxConnectionReuseTime=300
+    ucp.maxConnectionReuseCount=100
+    smdc.nmsDbIpAddress=ORACLE_HOST
+    smdc.portNaming=standard
+    smdc.netconfManager.type=NTF
+    smdc.netconfManager.ipAddress=SERVER_NAME
+    smdc.netconfManager.port=HTTPS_PORT
+    smdc.netconfManager.protocol=https
+    MwNM.url=https://SERVER_NAME:HTTPS_PORT/axis2/services/MwNM_Sync_Services_R?wsdl
+    MwNM.IndiceDb=102
+    MwNM.Provider=1
+    MwNM.Area=1
+    MwNM.TabPm=siae1
+    MwNM.Text=
+    org.quartz.scheduler.instanceName: nmswebs-scheduler
+    org.quartz.scheduler.threadName: nmswebs-scheduler-thread
+    org.quartz.threadPool.class: org.quartz.simpl.SimpleThreadPool
+    org.quartz.threadPool.threadCount: 2
+    org.quartz.threadPool.threadPriority: 5

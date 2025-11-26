@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+    spec:
+      #securityContext:
+        #runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
+        #allowPrivilegeEscalation: {{ .Values.securityContext.allowPrivilegeEscalation }}
+        
+      initContainers:
+       - name: extract-tns-webs
+         image: alpine
+         command: ["sh", "-c", "tar -xzf /tmp/tns.tgz -C /usr/share/instantclient/tns"]
+         volumeMounts:
+            - name: tns-config-webs
+              mountPath: /tmp
+            - name: tns-extracted
+              mountPath: /usr/share/instantclient/tns
+              
+      containers: 
+        - name: {{ .Values.app.name }}
+          image: {{ .Values.image.repository }}
+          ports:
+            - name: {{ .Values.service.protocol }}        # <- name is optional but helpful
+              containerPort: {{ .Values.service.port }}
+
+          # ✅ single volumeMounts block
+          volumeMounts:
+            - name: webs-configmap
+              mountPath: /app/application.properties
+              subPath: application.properties
+            - name: webs-pvc
+              mountPath: /usr/local/tomcat/work/Catalina/localhost/nmswebc
+            - name: webs-pvc
+              mountPath: /opt/nms5ux/tools/nmsConfigDataSet
+            - name: webs-pvc
+              mountPath: /home/ftp/pub/cliProvisioning/data
+            - name: webs-pvc
+              mountPath: /opt/nms5ux/tools/cliProvisioning/output
+            - name: webs-pvc
+              mountPath: /home/ftp/pub
+            - name: webs-pvc
+              mountPath: /opt/nms5ux/conf/equserinventory
+            - name: webs-pvc
+              mountPath: /exports
+            - name: webs-pvc
+              mountPath: /app/siaecert.crt:ro
+            - name: webs-pvc
+              mountPath: /app/siaekey.pem:ro
+            - name: webs-pvc
+              mountPath: /app/siaekeystore.jks:ro
+            - name: webs-pvc
+              mountPath: /app/trustStore.jks:ro
+            - name: webs-pvc
+              mountPath: /app/coreapplog/
+            - name: tns-extracted
+              mountPath: /usr/share/instantclient/tns
+
+          # ✅ environment variables
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASS
+                  
+          # ✅ application run command
+          command: ["java"]
+          args: ["-jar", "webs.jar", "--spring.config.location=/app/application.properties"]
+          resources:
+            requests:
+              cpu: {{ .Values.resource.cpu }}
+              memory: {{ .Values.resource.memory }}
+            limits:
+              cpu: {{ .Values.resource.cpu }}
+              memory: {{ .Values.resource.memory }}     
+      imagePullSecrets:
+        {{- range .Values.image.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
+      # ✅ volume definition
+      volumes:
+        - name: webs-configmap
+          configMap:
+            name: webs-properties-ConfigMap
+        - name: webs-pvc
+          persistentVolumeClaim:
+            claimName: webs-pvc
+        - name: tns-config
+          secret:
+            secretName: tns-config-webs
+        - name: tns-extracted
+          emptyDir: {}     
