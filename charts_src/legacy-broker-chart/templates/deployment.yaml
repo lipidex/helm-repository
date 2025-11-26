@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ems6d
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: ems6d
+  template:
+    metadata:
+      labels:
+        app: ems6d
+    spec:
+      imagePullSecrets:
+        {{- range .Values.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
+      containers:
+      - name: ems6d
+        command: ["/bin/sh"]
+        args: ["-c", "export EMS6D=$HOSTNAME;/app/start.sh /opt/nms5ux/bin/ems6d"]
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        livenessProbe:
+            exec:
+              command:
+                - /app/healthcheck.sh ems6d
+            failureThreshold: {{ .Values.ems6d.failureThreshold }}
+            initialDelaySeconds: {{ .Values.ems6d.initialDelaySeconds }}
+            periodSeconds: {{ .Values.ems6d.periodSeconds }}
+            timeoutSeconds: {{ .Values.ems6d.timeoutSeconds }}
+        env:
+        - name: HOME
+          value: /tmp
+        - name: CODEWORD
+          valueFrom:
+            secretKeyRef:
+              name: ems6d-codeword
+              key: CODEWORD
+        resources:
+{{- toYaml .Values.resources | nindent 10 }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ke-connector
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: ke-connector
+  template:
+    metadata:
+      labels:
+        app: ke-connector
+    spec:
+      imagePullSecrets:
+        {{- range .Values.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
+      containers:
+      - name: ke-connector
+        command: ["/bin/sh"]
+        args: ["-c", "/app/start.sh /opt/nms5ux/bin/keConnector"]
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        livenessProbe:
+            exec:
+              command:
+                - /app/healthcheck.sh keConnector
+            failureThreshold: {{ .Values.ems6d.failureThreshold }}
+            initialDelaySeconds: {{ .Values.ems6d.initialDelaySeconds }}
+            periodSeconds: {{ .Values.ems6d.periodSeconds }}
+            timeoutSeconds: {{ .Values.ems6d.timeoutSeconds }}
+        env:
+        - name: HOME
+          value: /tmp
+        {{- if .Values.globalEnv.enabled }}
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: {{ default "global-env" .Values.globalEnv.name }}
+              key: KAFKA_BROKERS
+        - name: EMS6D
+          valueFrom:
+            configMapKeyRef:
+              name: {{ default "global-env" .Values.globalEnv.name }}
+              key: EMS6D
+        {{- end }}
+        resources:
+{{- toYaml .Values.resources | nindent 10 }}
+

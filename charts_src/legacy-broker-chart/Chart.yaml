@@ -1,0 +1,4 @@
+apiVersion: v2
+description: Helm chart for ems6d-keConnector
+name: legacy-broker-chart
+version: 0.1.0

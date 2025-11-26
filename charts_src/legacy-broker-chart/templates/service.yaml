@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ems6d
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: ems6d
+spec:
+  type: ClusterIP
+  ports:
+  - name: ems6d
+    #port: {{ .Values.ems6d.port }}
+    #targetPort: {{ .Values.ems6d.port }}
+    port: 13006
+    targetPort: 13006
+  selector:
+      app: ems6d

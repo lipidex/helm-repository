@@ -1,0 +1,39 @@
+namespace: 
+storageClassName: 
+pullSecrets:
+  - name: aws-cred
+
+image:
+  repository: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/ems6d
+  tag: latest
+  pullPolicy: IfNotPresent
+ 
+replicaCount: 1
+
+globalEnv:
+  enabled: true
+  name: global-env
+
+ems6d:
+  storageSize: 2M
+  failureThreshold: 15
+  initialDelaySeconds: 1800
+  periodSeconds: 1800
+  timeoutSeconds: 10
+
+resources:
+  limits:
+    cpu: "100m"
+    memory: "128Mi"
+  requests:
+    cpu: "50m"
+    memory: "64Mi"
+
+ke-resources:
+  limits:
+    cpu: "100m"
+    memory: "128Mi"
+  requests:
+    cpu: "50m"
+    memory: "64Mi"
+ 
