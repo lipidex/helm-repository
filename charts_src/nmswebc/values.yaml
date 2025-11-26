@@ -21,7 +21,7 @@ tnsAdmin:
   mountPath: /secret
   
 kafka:
-  kafka_broker: kafka-data
+  kafka_broker: kafka
   kafka_port: "9092"
   
 asd: 
