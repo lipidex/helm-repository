@@ -79,8 +79,8 @@ spec:
                   key: DB_PASS
                   
           # ✅ application run command
-          command: ["java"]
-          args: ["-jar", "webs.jar", "--spring.config.location=/app/application.properties"]
+          #command: ["java"]
+          #args: ["-jar", "webs.jar", "--spring.config.location=/app/application.properties"]
           resources:
             requests:
               cpu: {{ .Values.resource.cpu }}
