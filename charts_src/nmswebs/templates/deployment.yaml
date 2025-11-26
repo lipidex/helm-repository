@@ -19,7 +19,7 @@ spec:
       initContainers:
        - name: extract-tns-webs
          image: alpine
-         command: ["sh", "-c", "tar -xzf /tmp/tns.tgz -C /usr/share/instantclient/tns"]
+         command: ["sh", "-c", "tar -xzf /tmp/tns.tgz -C /usr/share/instantclient"]
          volumeMounts:
             - name: tns-config
               mountPath: /tmp
