@@ -43,11 +43,11 @@ spec:
               value: {{ .Values.asd.asd_port | quote }}
           resources:
             requests:
-              cpu: {{ .Values.resource.cpu }}
-              memory: {{ .Values.resource.memory }}
+              cpu: {{ .Values.resource.requests.cpu }}
+              memory: {{ .Values.resource.requests.memory }}
             limits:
-              cpu: {{ .Values.resource.cpu }}
-              memory: {{ .Values.resource.memory }}
+              cpu: {{ .Values.resource.limits.cpu }}
+              memory: {{ .Values.resource.limits.memory }}
       imagePullSecrets:
         {{- range .Values.app.pullSecrets }}
         - name: {{ .name }}
