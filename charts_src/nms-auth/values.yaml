@@ -1,0 +1,53 @@
+# --- Application configuration ---
+app:
+  name: nms-auth
+  image: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/nms-auth:latest
+  replicas: 1
+  containerPort: 8442
+  pullSecrets:
+    - name: aws-cred
+
+# --- Configurations (these will be injected into property files) ---
+db:
+  NMS_DB_NAME: NMS5UX
+  ORACLE_HOST: database
+  ORACLE_PORT: "1521"
+  TNS_ADMIN: /usr/share/instantclient/tns
+  EMS6D: ems6d
+
+tnsAdmin:
+  enabled: true
+  secretName: tns-config
+  mountPath: /secret
+  
+kafka:
+  kafka_broker: kafka
+  kafka_port: "9092"
+  
+asd: 
+  asd_url: nms-asd
+  asd_port: "8087"
+  
+webs:
+  webs_url: nmswebs
+  webs_port: "8081"
+  
+pvc:
+  storageClassName: gp3-csi
+  accessModes:
+    - ReadWriteOnce
+  size: "1Gi"
+
+# --- OpenShift Service ---
+service:
+  type: ClusterIP
+  port: 8442
+  protocol: tcp
+  
+securityContext:
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+
+resource:
+  cpu: "500m"
+  memory: "1Gi"
