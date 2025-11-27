@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msd-executor
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msd-executor
+  template:
+    metadata:
+      labels:
+        app: msd-executor
+    spec:
+      imagePullSecrets:
+        {{- range .Values.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
+      volumes:
+        {{- if $.Values.tnsAdmin.enabled }}
+        - name: tns-secret
+          secret:
+            secretName: {{ $.Values.tnsAdmin.secretName }}
+        {{- end }}
+        - name: platform
+          configMap:
+            name: platform
+      containers:
+      - name: msd-executor
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        livenessProbe:
+            exec:
+              command:
+                - /app/ov_healthcheck.sh
+            failureThreshold: {{ .Values.usersloginlogout.failureThreshold }}
+            initialDelaySeconds: {{ .Values.usersloginlogout.initialDelaySeconds }}
+            periodSeconds: {{ .Values.usersloginlogout.periodSeconds }}
+            timeoutSeconds: {{ .Values.usersloginlogout.timeoutSeconds }}
+        envFrom:
+        {{- if $.Values.globalEnv.enabled }}
+        - configMapRef:
+            name: {{ default "global-env" $.Values.globalEnv.name }}
+        {{- end }}
+        env:
+        - name: HOME
+          value: /tmp
+        {{- if $.Values.tnsAdmin.enabled }}
+        volumeMounts:
+          - name: tns-secret
+            mountPath:  {{ $.Values.tnsAdmin.mountPath }} 
+            readOnly: true
+        {{- end }}
+          - name: platform
+            mountPath: /siae
+            readOnly: true
+        resources:
+{{- toYaml .Values.resources | nindent 10 }}

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platform
+  namespace: {{ .Values.namespace }}
+data:
+  platform.conf: |
+    /opt/nms5ux/bin/SnmpService
+    /opt/nms5ux/bin/GenericService
+    /opt/nms5ux/bin/NetworkViewerService
+    /opt/nms5ux/bin/EqActionsService
