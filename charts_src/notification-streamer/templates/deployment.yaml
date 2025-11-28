@@ -48,9 +48,19 @@ spec:
           livenessProbe:
             exec:
               command:
-                - /app/healthcheck.sh
-                - NotificationStreamer
-                {{- toYaml .Values.liveness | nindent 14 }}
+                - /bin/sh
+                - '-c'
+                - |
+                  if pgrep -f java >/dev/null; then
+                    exit 0
+                  else
+                    exit 1
+                  fi
+            initialDelaySeconds: 60
+            timeoutSeconds: 10
+            periodSeconds: 60
+            successThreshold: 1
+            failureThreshold: 3
       imagePullSecrets:
         {{- range .Values.image.pullSecrets }}
         - name: {{ .name }}

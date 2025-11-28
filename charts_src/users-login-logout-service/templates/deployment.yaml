@@ -28,13 +28,21 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
-            exec:
-              command:
-                - ps -elf | grep 'UsersLoginLogoutService' | grep -v grep || exit 1
-            failureThreshold: {{ .Values.usersloginlogout.failureThreshold }}
-            initialDelaySeconds: {{ .Values.usersloginlogout.initialDelaySeconds }}
-            periodSeconds: {{ .Values.usersloginlogout.periodSeconds }}
-            timeoutSeconds: {{ .Values.usersloginlogout.timeoutSeconds }}
+          exec:
+            command:
+              - /bin/sh
+              - '-c'
+              - |
+                if pgrep -f UsersLoginLogoutService >/dev/null; then
+                  exit 0
+                else
+                  exit 1
+                fi
+          initialDelaySeconds: 60
+          timeoutSeconds: 10
+          periodSeconds: 60
+          successThreshold: 1
+          failureThreshold: 3
         envFrom:
         {{- if $.Values.globalEnv.enabled }}
         - configMapRef:
