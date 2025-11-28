@@ -90,7 +90,7 @@ entries:
     digest: 2b78d75fde93a294832acc54521a12bb4ac0407ce23f759d08237e1de043c3a6
     name: notification-streamer
     urls:
-    - oci://927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/notification-streamer-0.1.0.tgz
+    - oci://927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/notification-streamer
     version: 0.1.0
   oracle:
   - apiVersion: v2
