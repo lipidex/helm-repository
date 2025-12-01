@@ -83,11 +83,11 @@ spec:
           #args: ["-jar", "webs.jar", "--spring.config.location=/app/application.properties"]
           resources:
             requests:
-              cpu: {{ .Values.resource.requests.cpu }}
-              memory: {{ .Values.resource.requests.memory }}
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
             limits:
-              cpu: {{ .Values.resource.limits.cpu }}
-              memory: {{ .Values.resource.limits.memory }}     
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}     
       imagePullSecrets:
         {{- range .Values.image.pullSecrets }}
         - name: {{ .name }}
