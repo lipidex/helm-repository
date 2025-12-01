@@ -18,9 +18,9 @@ image:
 
 environ:
    - name: SIAE_RING
-     value: FALSE
+     value: "FALSE"
    - name: SIAE_VLAN
-     value: FALSE
+     value: "FALSE"
 
 liveness:
   failureThreshold: 3
