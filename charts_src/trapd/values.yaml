@@ -1,5 +1,4 @@
-namespace: 
-storageClassName: 
+storageClassName: gp3-csi
 
 image:
   repository: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/trapd
