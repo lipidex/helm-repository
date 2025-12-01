@@ -3,8 +3,6 @@ kind: Route
 metadata:
   name: tomcat-app-route
 spec:
-  host: tomcat-app-route-srvi5ryhxc-dev.apps.mycluster.com
-  path: /nmswebc
   to:
     kind: Service
     name: {{ .Values.app.name }}
