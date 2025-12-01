@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nmsMnd
+  name: nms-mnd
   namespace: {{ .Values.namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nmsMnd
+      app: nms-mnd
   template:
     metadata:
       labels:
-        app: nmsMnd
+        app: nms-mnd
     spec:
       imagePullSecrets:
         {{- range .Values.image.pullSecrets }}
         - name: {{ .name }}
         {{- end }}
       containers:
-      - name: nmsMnd
+      - name: nms-mnd
         command: ["/bin/sh"]
         args: ["-c", "/app/start.sh /opt/nms5ux/bin/nmsMnd"]
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
