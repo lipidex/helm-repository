@@ -18,7 +18,7 @@ spec:
         fsGroup: {{ .Values.securityContext.fsGroup }}
       initContainers:
         - name: copy-file
-          image: quay.io/leonim/tools:latest
+          image: {{ .Values.image.initRepository }}
           command: ["/bin/sh", "-c"]
           args:
             - cp /smdc/dump/empty-smdc.dmp.gz /dump/empty-smdc.dmp.gz && gunzip /dump/empty-smdc.dmp.gz

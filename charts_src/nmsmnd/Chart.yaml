@@ -1,0 +1,4 @@
+apiVersion: v2
+description: Helm chart for nmsMnd
+name: nmsmnd
+version: 0.1.0

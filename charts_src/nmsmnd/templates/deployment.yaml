@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nmsMnd
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nmsMnd
+  template:
+    metadata:
+      labels:
+        app: nmsMnd
+    spec:
+      imagePullSecrets:
+        {{- range .Values.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
+      containers:
+      - name: nmsMnd
+        command: ["/bin/sh"]
+        args: ["-c", "/app/start.sh /opt/nms5ux/bin/nmsMnd"]
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        livenessProbe:
+            exec:
+              command:
+                - /app/healthcheck.sh
+                - nmsMnd
+{{- toYaml .Values.liveness | nindent 12 }}
+        env:
+        - name: HOME
+          value: /tmp
+        {{- if .Values.globalEnv.enabled }}
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: {{ default "global-env" .Values.globalEnv.name }}
+              key: KAFKA_BROKERS
+        {{- end }}
+        - name: EMS6D
+          value: ems6d
+{{- toYaml .Values.environ | nindent 8 }}
+        resources:
+{{- toYaml .Values.resources | nindent 10 }}
+

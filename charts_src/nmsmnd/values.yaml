@@ -1,0 +1,41 @@
+namespace: 
+
+globalEnv:
+  enabled: true
+  name: global-env
+
+tnsAdmin:
+  enabled: true
+  secretName: tns-config
+  mountPath: /secret
+
+secret:
+  pullSecrets:
+    - name: aws-cred
+
+image:
+    repository: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/ems6d
+    tag: latest
+    pullPolicy: IfNotPresent
+
+environ:
+   - name: SIAE_RING
+     value: FALSE
+   - name: SIAE_VLAN
+     value: FALSE
+
+liveness:
+  failureThreshold: 3
+  initialDelaySeconds: 60
+  periodSeconds: 60
+  timeoutSeconds: 10
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "500Mi"
+  requests:
+    cpu: "50m"
+    memory: "64Mi"
+
+ 

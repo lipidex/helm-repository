@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trapd
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: trapd
+  template:
+    metadata:
+      labels:
+        app: trapd
+    spec:
+      imagePullSecrets:
+        {{- range .Values.image.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
+      volumes:
+        - name: trapd-data
+          persistentVolumeClaim:
+            claimName: trapd-data
+        - name: unmanaged-traps
+          configMap:
+            name: unmanaged-traps
+
+      containers:
+        - name: trapd
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          livenessProbe:
+            exec:
+              command:
+                - /app/healthcheck.sh
+                - trapd
+            failureThreshold: {{ .Values.trapd.failureThreshold }}
+            initialDelaySeconds: {{ .Values.trapd.initialDelaySeconds }}
+            periodSeconds: {{ .Values.trapd.periodSeconds }}
+            timeoutSeconds: {{ .Values.trapd.timeoutSeconds }}
+          volumeMounts:
+            - name: trapd-data
+              mountPath: /var/net-snmp
+            - name: unmanaged-traps
+              mountPath: /opt/nms5ux/conf/
+          env:
+            - name: HOME
+              value: /tmp
+            - name: SNMP_TRAP
+              value: "1024:udp"
+            {{- if .Values.globalEnv.enabled }}
+            - name: KAFKA_BROKERS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ default "global-env" .Values.globalEnv.name }}
+                  key: KAFKA_BROKERS
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

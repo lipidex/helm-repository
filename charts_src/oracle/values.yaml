@@ -1,4 +1,5 @@
 image:
+  initRepository: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/tools:latest
   repository: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/oracle
   tag: "1013480000" # latest for this specific id
   pullSecrets:

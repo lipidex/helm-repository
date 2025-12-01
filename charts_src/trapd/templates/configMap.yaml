@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unmanaged-traps
+data:
+  nms5uxTrapNotManaged.cfg: |
+    18,2515
+    19,2515
+    20,2515
