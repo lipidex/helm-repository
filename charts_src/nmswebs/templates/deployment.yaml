@@ -18,7 +18,7 @@ spec:
         
       initContainers:
        - name: extract-tns-webs
-         image: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/tools:latest # alpine
+         image: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/alpine:latest # alpine
          command: ["sh", "-c", "tar -xzf /tmp/tns.tgz -C /usr/share/instantclient"]
          volumeMounts:
             - name: tns-config
@@ -28,7 +28,7 @@ spec:
               
       containers: 
         - name: {{ .Values.app.name }}
-          image: {{ .Values.image.repository }}
+          image: {{ .Values.image.repository }} # add tag
           ports:
             - name: {{ .Values.service.protocol }}        # <- name is optional but helpful
               containerPort: {{ .Values.service.port }}
