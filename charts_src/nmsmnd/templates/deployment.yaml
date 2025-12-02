@@ -1,24 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nms-mnd
+  name: nmsmnd
   namespace: {{ .Values.namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nms-mnd
+      app: nmsmnd
   template:
     metadata:
       labels:
-        app: nms-mnd
+        app: nmsmnd
     spec:
       imagePullSecrets:
-        {{- range .Values.image.pullSecrets }}
+        {{- range .Values.pullSecrets }}
         - name: {{ .name }}
         {{- end }}
+      volumes:
+        {{- if $.Values.tnsAdmin.enabled }}
+        - name: tns-secret
+          secret:
+            secretName: {{ $.Values.tnsAdmin.secretName }}
+        {{- end }}
       containers:
-      - name: nms-mnd
+      - name: nmsmnd
         command: ["/bin/sh"]
         args: ["-c", "/app/start.sh /opt/nms5ux/bin/nmsMnd"]
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -29,19 +35,22 @@ spec:
                 - /app/healthcheck.sh
                 - nmsMnd
 {{- toYaml .Values.liveness | nindent 12 }}
+        envFrom:
+        {{- if $.Values.globalEnv.enabled }}
+        - configMapRef:
+            name: {{ default "global-env" $.Values.globalEnv.name }}
+        {{- end }}
         env:
         - name: HOME
           value: /tmp
-        {{- if .Values.globalEnv.enabled }}
-        - name: KAFKA_BROKERS
-          valueFrom:
-            configMapKeyRef:
-              name: {{ default "global-env" .Values.globalEnv.name }}
-              key: KAFKA_BROKERS
-        {{- end }}
-        - name: EMS6D
-          value: ems6d
 {{- toYaml .Values.environ | nindent 8 }}
+        volumeMounts:
+        {{- if $.Values.tnsAdmin.enabled }}
+          - name: tns-secret
+            mountPath:  {{ $.Values.tnsAdmin.mountPath }} 
+            readOnly: true
+        {{- end }}
+
         resources:
 {{- toYaml .Values.resources | nindent 10 }}
 

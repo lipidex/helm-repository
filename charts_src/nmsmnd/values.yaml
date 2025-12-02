@@ -9,12 +9,14 @@ tnsAdmin:
   secretName: tns-config
   mountPath: /secret
 
+secret:
+  pullSecrets:
+    - name: aws-cred
+
 image:
     repository: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/ems6d
     tag: latest
     pullPolicy: IfNotPresent
-    pullSecrets:
-    - name: aws-cred
 
 environ:
    - name: SIAE_RING
