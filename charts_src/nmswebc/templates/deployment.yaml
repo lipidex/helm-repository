@@ -17,7 +17,7 @@ spec:
         #runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
         #allowPrivilegeEscalation: {{ .Values.securityContext.allowPrivilegeEscalation }}
       initContainers:
-       - name: db_updater
+       - name: db-updater
          image: {{ .Values.db.DB_HELPER_IMAGE }}
          env:
             # Example 1: Static environment variable from values.yaml
