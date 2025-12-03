@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.app.name }}
 spec:
   replicas: {{ .Values.app.replicas }}
-  minReplicas: 1
+  #minReplicas: 1
   selector:
     matchLabels:
       app: {{ .Values.app.name }}
@@ -16,6 +16,35 @@ spec:
       #securityContext:
         #runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
         #allowPrivilegeEscalation: {{ .Values.securityContext.allowPrivilegeEscalation }}
+      initContainers:
+       - name: db_updater
+         image: {{ .Values.db.DB_HELPER_IMAGE }}
+         env:
+            # Example 1: Static environment variable from values.yaml
+            - name: ORACLE_HOST
+              value: {{ .Values.db.ORACLE_HOST | quote }}
+            - name: ORACLE_PORT
+              value: {{ .Values.db.ORACLE_PORT | quote }}
+            - name: ORACLE_DATABASE
+              value: {{ .Values.db.NMS_DB_NAME | quote }}
+            - name: APP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_USER
+            - name: APP_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASS
+         volumeMounts:
+            - name: random-mac-secret
+              mountPath: /opt/secret/RANDOM_MAC_KEY
+              subPath: RANDOM_MAC_KEY
+            - name: mac-extracted
+              mountPath: /shared/mac.env
+              subPath: mac.env
+            
       containers:
         - name: {{ .Values.app.name }}
           image: {{ .Values.app.image }}
@@ -37,10 +66,15 @@ spec:
             - name: config-volume
               mountPath: /usr/local/tomcat/conf/nms5pwd.properties
               subPath: nms5pwd.properties
+
+            - name: mac-extracted
+              mountPath: /shared/mac.env
+              subPath: mac.env
           env:
             # Example 1: Static environment variable from values.yaml
             - name: ASD_PORT
               value: {{ .Values.asd.asd_port | quote }}
+
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
@@ -48,6 +82,7 @@ spec:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
+
       imagePullSecrets:
         {{- range .Values.app.pullSecrets }}
         - name: {{ .name }}
@@ -59,4 +94,12 @@ spec:
         - name: webc-pvc
           persistentVolumeClaim:
             claimName: webc-pvc
+        #- name: db-secret
+         # secret:
+          #  secretName: db-secret
+        - name: random-mac-secret
+          secret:
+            secretName: random-mac-secret
+        - name: mac-extracted
+          emptyDir: {}
           

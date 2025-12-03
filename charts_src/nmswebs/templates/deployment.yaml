@@ -67,11 +67,15 @@ spec:
 
           # ✅ environment variables
           env:
+            - name: TNS_ADMIN
+              value: "/usr/share/instantclient/tns"
+              
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
                   name: db-secret
                   key: DB_USER
+                  
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
