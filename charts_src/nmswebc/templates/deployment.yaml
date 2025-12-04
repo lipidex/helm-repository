@@ -43,8 +43,7 @@ spec:
               mountPath: /opt/secret/RANDOM_MAC_KEY
               subPath: RANDOM_MAC_KEY
             - name: mac-extracted
-              mountPath: /shared/mac.env
-              subPath: mac.env
+              mountPath: /shared
             
       containers:
         - name: {{ .Values.app.name }}
