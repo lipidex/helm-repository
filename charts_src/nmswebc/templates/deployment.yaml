@@ -68,8 +68,7 @@ spec:
               subPath: nms5pwd.properties
 
             - name: mac-extracted
-              mountPath: /shared/mac.env
-              subPath: mac.env
+              mountPath: /shared
           env:
             # Example 1: Static environment variable from values.yaml
             - name: ASD_PORT
@@ -103,3 +102,4 @@ spec:
         - name: mac-extracted
           emptyDir: {}
           
+
