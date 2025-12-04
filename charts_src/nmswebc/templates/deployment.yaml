@@ -19,6 +19,7 @@ spec:
       initContainers:
        - name: db-updater
          image: {{ .Values.db.DB_HELPER_IMAGE }}
+         command: ["/bin/sh", "-c", "/smdc/init-scripts/all_script.sh || sleep infinity"]
          env:
             # Example 1: Static environment variable from values.yaml
             - name: ORACLE_HOST
@@ -102,4 +103,5 @@ spec:
         - name: mac-extracted
           emptyDir: {}
           
+
 
