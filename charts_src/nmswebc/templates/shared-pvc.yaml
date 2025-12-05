@@ -11,4 +11,5 @@ spec:
       storage: {{ .Values.pvc.size }}
   {{- if .Values.pvc.storageClassName }}
   storageClassName: {{ .Values.pvc.storageClassName | quote }}
+  {{- end }}
 {{- end }}
