@@ -1,0 +1,12 @@
+{{- if not (lookup "v1" "PersistentVolumeClaim" .Release.Namespace "shared-mac-pvc") }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-mac-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+{{- end }}
