@@ -63,6 +63,7 @@ data:
     wallet.ipAddress={{ .Values.db.ORACLE_HOST }}
     #kafka configration
     spring.kafka.consumer.bootstrap-servers={{ .Values.kafka.kafka_broker }}:{{ .Values.kafka.kafka_port }}
+    spring.kafka.producer.bootstrap-servers={{ .Values.kafka.kafka_broker }}:{{ .Values.kafka.kafka_port }}
     spring.kafka.consumer.client-id={{ .Values.kafka.kafka_broker }}
     spring.kafka.consumer.group-id=authservice
     spring.kafka.consumer.auto-offset-reset=latest
@@ -71,4 +72,5 @@ data:
     spring.kafka.consumer.key-deserializer= org.apache.kafka.common.serialization.StringDeserializer
     spring.kafka.consumer.value-deserializer= org.apache.kafka.common.serialization.StringDeserializer
     spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+
     spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer
