@@ -42,7 +42,7 @@ spec:
             - name: random-mac-secret
               mountPath: /opt/secret/RANDOM_MAC_KEY
               subPath: RANDOM_MAC_KEY
-            - name: mac-extracted
+            - name: shared-mac
               mountPath: /shared
             
       containers:
@@ -67,7 +67,7 @@ spec:
               mountPath: /usr/local/tomcat/conf/nms5pwd.properties
               subPath: nms5pwd.properties
 
-            - name: mac-extracted
+            - name: shared-mac
               mountPath: /shared
           env:
             # Example 1: Static environment variable from values.yaml
@@ -101,7 +101,11 @@ spec:
             secretName: random-mac-secret
         - name: mac-extracted
           emptyDir: {}
+        - name: shared-mac
+          persistentVolumeClaim:
+            claimName: shared-mac-pvc
           
+
 
 
 
