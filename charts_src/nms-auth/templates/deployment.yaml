@@ -18,7 +18,7 @@ spec:
         
       initContainers:
        - name: extract-tns-auth
-         image: alpine
+         image: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/alpine:latest # alpine
          command: ["sh", "-c", "tar -xzf /tmp/tns.tgz -C /usr/share/instantclient"]
          volumeMounts:
             - name: tns-config-auth
