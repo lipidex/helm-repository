@@ -3,9 +3,9 @@ entries:
   bit-kafka:
   - apiVersion: v2
     appVersion: 3.7.1-debian-12-r9
-    created: "2025-12-09T14:59:55.915059596Z"
+    created: "2025-12-12T11:37:23.440253088Z"
     description: Helm chart for Bitnami Kafka
-    digest: 04b6d06663a313f753b147fa937df706e01c2c14a312f4749c04ff31e0f35ee8
+    digest: b739499f276c58de4ad08806da84bc24cb4d2ca7b5a3bff66da8a38ce981bfdb
     name: bit-kafka
     type: application
     urls:
@@ -13,7 +13,7 @@ entries:
     version: 0.1.0
   legacy-broker-chart:
   - apiVersion: v2
-    created: "2025-12-09T14:59:55.915421439Z"
+    created: "2025-12-12T11:37:23.440601067Z"
     description: Helm chart for ems6d-keConnector
     digest: 6bf49e14206fd1c04296a011374b7f00de505e10a10d03017947754daaf88dea
     name: legacy-broker-chart
@@ -22,7 +22,7 @@ entries:
     version: 0.1.0
   mini-nms:
   - apiVersion: v2
-    created: "2025-12-09T14:59:55.924568272Z"
+    created: "2025-12-12T11:37:23.442371871Z"
     dependencies:
     - name: bit-kafka
       repository: file://../bit-kafka
@@ -42,7 +42,7 @@ entries:
   msd-executor:
   - apiVersion: v2
     appVersion: 9.0.1
-    created: "2025-12-09T14:59:55.925542761Z"
+    created: "2025-12-12T11:37:23.442624832Z"
     description: Helm chart for MsdExecutor
     digest: 7e2d0278d1b093b9109483b8b90fa1bd0782c3c9390f7d2dbdc253879f89beec
     name: msd-executor
@@ -53,7 +53,7 @@ entries:
   nms-auth:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-12-09T14:59:55.927240652Z"
+    created: "2025-12-12T11:37:23.443378536Z"
     description: A Helm chart for NMS Authentication Service
     digest: 83bb844e72a6719fb97d08c539379899f68f79c62ecefba7dcc13290e1a037a7
     name: nms-auth
@@ -63,7 +63,7 @@ entries:
     version: 0.1.0
   nmsmnd:
   - apiVersion: v2
-    created: "2025-12-09T14:59:55.928008281Z"
+    created: "2025-12-12T11:37:23.446195733Z"
     description: Helm chart for nmsMnd
     digest: 1c27c12100cb839bf074d5a4c33e71b25637b66183ce86da24768d66df94b185
     name: nmsmnd
@@ -73,7 +73,7 @@ entries:
   nmswebc:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-12-09T14:59:55.929235445Z"
+    created: "2025-12-12T11:37:23.449903349Z"
     description: A Helm chart for Kubernetes
     digest: f8c6bc96f5ff8c3517ee82bd68d97ca5780702948e5d85c4f3f3d1b70484cb2c
     name: nmswebc
@@ -84,7 +84,7 @@ entries:
   nmswebs:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-12-09T14:59:55.930487496Z"
+    created: "2025-12-12T11:37:23.451331176Z"
     description: A Helm chart for NMS WEBS Application
     digest: 5034d94f49e185941ca93a28013d957c5a5f6867d7c9858b9fc1c98f753dd891
     name: nmswebs
@@ -94,7 +94,7 @@ entries:
     version: 0.1.0
   notification-streamer:
   - apiVersion: v2
-    created: "2025-12-09T14:59:55.931027577Z"
+    created: "2025-12-12T11:37:23.451534132Z"
     description: Helm chart for NotificationStreamer deamon
     digest: 9cc85fefef82c3479e644fed197742d0079299cc56d47f212c0fe0464457d66a
     name: notification-streamer
@@ -103,7 +103,7 @@ entries:
     version: 0.1.0
   oracle:
   - apiVersion: v2
-    created: "2025-12-09T14:59:55.931658884Z"
+    created: "2025-12-12T11:37:23.45179158Z"
     description: Helm chart for Oracle DB container
     digest: 59e367359d70d8487b309debf5f012a39fc95b07fd50ea224472ab3515bd40d3
     name: oracle
@@ -112,7 +112,7 @@ entries:
     version: 0.1.0
   trapd-chart:
   - apiVersion: v2
-    created: "2025-12-09T14:59:55.932235606Z"
+    created: "2025-12-12T11:37:23.45201849Z"
     description: Helm chart for trapd
     digest: 90c87bc57861f28b8b627c2757a984fd6066c35a52545a17fe0c8c5b597a727a
     name: trapd-chart
@@ -121,11 +121,11 @@ entries:
     version: 0.1.0
   users-login-logout-service:
   - apiVersion: v2
-    created: "2025-12-09T14:59:55.93330231Z"
+    created: "2025-12-12T11:37:23.452220505Z"
     description: Helm chart for UsersLoginLogout
     digest: 15f12cc6c37fd0e195e719969bebfb73063582842bb6565c6ff140d31ec54b45
     name: users-login-logout-service
     urls:
     - charts/users-login-logout-service-0.1.2.tgz
     version: 0.1.2
-generated: "2025-12-09T14:59:55.914202992Z"
+generated: "2025-12-12T11:37:23.439799451Z"

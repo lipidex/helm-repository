@@ -33,6 +33,10 @@ spec:
       labels:
         app: kafka
     spec:
+      imagePullSecrets:
+        {{- range .Values.kafka.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
       containers:
         - name: kafka
           image: {{ .Values.kafka.image }}
