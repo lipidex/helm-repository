@@ -8,6 +8,10 @@ spec:
   backoffLimit: 3
   template:
     spec:
+      imagePullSecrets:
+        {{- range .Values.kafka.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
       restartPolicy: OnFailure
       containers:
       - name: create-topics
