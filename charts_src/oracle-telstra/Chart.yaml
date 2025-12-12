@@ -1,0 +1,4 @@
+apiVersion: v2
+description: Helm chart for Oracle DB container
+name: oracle-telstra
+version: 0.1.0

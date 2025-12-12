@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oracle-startup-scripts
+data:
+  01-custom.sh: |
+    #!/bin/bash
+
+    set -Eeuo pipefail
+    if [ ! -f /opt/oracle/oradata/.SCHEMA_CREATED ]; then
+    sqlplus -s / as sysdba <<EOF
+            WHENEVER SQLERROR EXIT SQL.SQLCODE
+
+            ALTER SYSTEM SET filesystemio_options='SETALL' scope=spfile;
+            ALTER SYSTEM SET log_checkpoint_interval=10000000 scope=spfile;
+            ALTER SYSTEM SET log_checkpoint_timeout=1800000 scope=spfile;
+            ALTER SYSTEM SET cursor_sharing='FORCE' scope=spfile;
+            ALTER SYSTEM SET parallel_degree_policy='AUTO' scope=spfile;
+
+            ALTER SESSION SET CONTAINER=${ORACLE_PDB};
+            CREATE USER ${PDB_USER} IDENTIFIED BY "${PDB_USER_PASSWORD}";
+            GRANT CONNECT, RESOURCE TO ${PDB_USER};
+            GRANT dba to ${PDB_USER};
+            alter tablespace USERS rename to DATA;
+            ALTER USER ${PDB_USER} QUOTA UNLIMITED ON DATA;
+            CREATE TABLESPACE INDX DATAFILE '${ORACLE_BASE}/oradata/${ORACLE_SID}/${ORACLE_PDB}/indx.dbf' SIZE 10m AUTOEXTEND ON NEXT 10m MAXSIZE UNLIMITED;
+            GRANT CREATE ANY DIRECTORY TO ${PDB_USER};
+            alter user ${PDB_USER} default tablespace DATA;
+            alter user ${PDB_USER} quota unlimited on INDX;
+            create or replace directory schemadumpdir as '/dump';
+            grant read,write on directory schemadumpdir to ${PDB_USER};
+            exit;
+    EOF
+
+    set +e
+    impdp ${PDB_USER}/${PDB_USER_PASSWORD}@//localhost:1521/${ORACLE_PDB} dumpfile=empty-smdc.dmp directory=schemadumpdir exclude=USER
+    status=$?
+    #set -e
+
+    if [ $status -eq 0 ]; then
+        echo "Import OK"
+    elif [ $status -eq 1 ]; then
+        echo "Import completed with warnings"
+    else
+        echo "Import failed"
+    #    exit 1
+    fi
+
+    sqlplus -s / as sysdba <<EOF
+            ALTER SESSION SET CONTAINER=${ORACLE_PDB};
+            REVOKE dba from ${PDB_USER};
+            EXEC DBMS_UTILITY.compile_schema(schema => 'TMN');
+            exit;
+    EOF
+
+    touch /opt/oracle/oradata/.SCHEMA_CREATED
+
+    fi
+

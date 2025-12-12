@@ -1,0 +1,8 @@
+1. Per installare il chart:
+   helm install oracle-db ./oracle-db
+
+2. Per verificare lo stato:
+   kubectl get pods -l app=oracle-db
+
+3. Per ottenere la password:
+   echo $(kubectl get secret --namespace default oracle-db -o jsonpath="{.data.ORACLE_PWD}" | base64 --decode)
