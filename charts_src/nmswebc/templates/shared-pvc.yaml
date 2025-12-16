@@ -9,5 +9,5 @@ spec:
   resources:
     requests:
       storage: {{ .Values.pvc.size }}
-  storageClassName: "efs-sc"
+  storageClassName: {{ .Values.sharedPvc.storageClassName }}
 {{- end }}

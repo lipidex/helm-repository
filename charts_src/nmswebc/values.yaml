@@ -32,7 +32,10 @@ asd:
 webs:
   webs_url: nmswebs
   webs_port: "8081"
-  
+
+sharedPvc:
+  storageClassName: efs-sc
+
 pvc:
   storageClassName: gp3-csi
   accessModes:
