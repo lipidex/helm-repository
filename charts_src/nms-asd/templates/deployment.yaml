@@ -27,7 +27,7 @@ spec:
              - name: tns-extracted
                mountPath: /usr/share/instantclient/tns
               
-      containers:
+       containers:
         - name: {{ .Values.app.name }}
           image: {{ .Values.app.image }}
           imagePullPolicy: Always
@@ -48,17 +48,17 @@ spec:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
        ############
-      imagePullSecrets:
-        {{- range .Values.app.pullSecrets }}
-        - name: {{ .name }}
-        {{- end }}        
-      volumes:
-        - name: config-volume
-          configMap:
-            name: {{ .Values.app.name }}-config
-        - name: tns-config
-          secret:
-            secretName: tns-config-asd
-        - name: tns-extracted
-          emptyDir: {}
+       imagePullSecrets:
+         {{- range .Values.app.pullSecrets }}
+         - name: {{ .name }}
+         {{- end }}        
+       volumes:
+         - name: config-volume
+           configMap:
+             name: {{ .Values.app.name }}-config
+         - name: tns-config
+           secret:
+             secretName: tns-config-asd
+         - name: tns-extracted
+           emptyDir: {}
           
