@@ -16,7 +16,7 @@ spec:
         #runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
         #allowPrivilegeEscalation: {{ .Values.securityContext.allowPrivilegeEscalation }}
         
-       initContainers:
+      initContainers:
         - name: extract-tns-asd
           image: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/alpine:latest
           imagePullPolicy: Always
@@ -27,7 +27,7 @@ spec:
              - name: tns-extracted
                mountPath: /usr/share/instantclient/tns
               
-       containers:
+      containers:
         - name: {{ .Values.app.name }}
           image: {{ .Values.app.image }}
           imagePullPolicy: Always
@@ -48,11 +48,11 @@ spec:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
        ############
-       imagePullSecrets:
+      imagePullSecrets:
          {{- range .Values.app.pullSecrets }}
          - name: {{ .name }}
          {{- end }}        
-       volumes:
+      volumes:
          - name: config-volume
            configMap:
              name: {{ .Values.app.name }}-config
