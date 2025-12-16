@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.app.name }}-config
+data:
+  application.properties: |
+    server.port={{ .Values.service.port }}
+    server.servlet.context-path=/asd
+    propertiesPath = /app/config
+    templateJson = /app/config/TemplateJson
+    confPath = /app/config
+    GetReqTopic=pltSnmpGetReqASD
+    GetResTopic=pltSnmpGetResASD
+    IpDb={{ .Values.db.ORACLE_HOST }}
+    PortaDb={{ .Values.db.ORACLE_PORT }}
+    NewConnectDb=false
+    IpNms5ux=SERVER_NAME
+    KafkaBroker={{ .Values.kafka.kafka_broker }}:{{ .Values.kafka.kafka_port }}
+    PortEns6d=13006
+    PortExecutor=13065
+    NewExecutor=true
+    isLinux=true
+    DbSecureConnection=true
+    DbFileProperties=/app/config/DbConnection.properties
+    # The format used for the keystore. It could be set to JKS in case it is a JKS file
+    server.ssl.key-store-type=JKS
+    # The path to the keystore containing the certificate
+    server.ssl.key-store=/app/config/PC2790.jks
+    # The password used to generate the certificate
+    server.ssl.key-store-password=nms5wi
+    # The key-password
+    server.ssl.key-password=nms5wi
+    # The alias mapped to the certificate
+    server.ssl.key-alias=nms5wi
+    #Spring Security enabled application
+    server.ssl.enabled=true
