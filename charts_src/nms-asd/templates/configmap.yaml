@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.app.name }}-config
 data:
-  application.properties: |
+  asd.properties: |
     server.port={{ .Values.service.port }}
     server.servlet.context-path=/asd
     propertiesPath = /app/config
