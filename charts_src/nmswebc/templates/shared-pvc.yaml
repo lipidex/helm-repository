@@ -1,4 +1,4 @@
-{{- if not (lookup "v1" "PersistentVolumeClaim" .Release.Namespace "shared-mac-pvc") }}
+# {{- if not (lookup "v1" "PersistentVolumeClaim" .Release.Namespace "shared-mac-pvc") }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
