@@ -4,10 +4,10 @@ metadata:
   name: shared-mac-pvc
 spec:
   accessModes:
-    {{- toYaml .Values.pvc.accessModes | nindent 4 }}
+    {{- toYaml .Values.sharedPvc.accessModes | nindent 4 }}
   resources:
     requests:
-      storage: {{ .Values.pvc.size }}
-  {{- if .Values.pvc.storageClassName }}
-  storageClassName: {{ .Values.pvc.storageClassName | quote }}
+      storage: {{ .Values.sharedPvc.size }}
+  {{- if .Values.sharedPvc.storageClassName }}
+  storageClassName: {{ .Values.sharedPvc.storageClassName | quote }}
   {{- end }}

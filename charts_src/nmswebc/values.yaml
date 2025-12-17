@@ -35,6 +35,9 @@ webs:
 
 sharedPvc:
   storageClassName: efs-sc
+  accessModes:
+    - ReadWriteMany
+  size: "1Gi"
 
 pvc:
   storageClassName: gp3-csi
