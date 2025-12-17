@@ -10,4 +10,4 @@ spec:
     requests:
       storage: {{ .Values.pvc.size }}
   storageClassName: {{ .Values.sharedPvc.storageClassName }}
-{{- end }}
+# {{- end }}
