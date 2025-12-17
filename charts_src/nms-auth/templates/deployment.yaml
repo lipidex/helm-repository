@@ -15,8 +15,37 @@ spec:
       securityContext:
         runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
         allowPrivilegeEscalation: {{ .Values.securityContext.allowPrivilegeEscalation }}
-        
+
       initContainers:
+       - name: db-updater
+         image: {{ .Values.db.DB_HELPER_IMAGE }}
+         imagePullPolicy: Always
+         #command: ["/usr/bin/bash", "-c", "/smdc/init-scripts/all_script.sh || true; sleep infinity"]
+         env:
+            # Example 1: Static environment variable from values.yaml
+            - name: ORACLE_HOST
+              value: {{ .Values.db.ORACLE_HOST | quote }}
+            - name: ORACLE_PORT
+              value: {{ .Values.db.ORACLE_PORT | quote }}
+            - name: ORACLE_DATABASE
+              value: {{ .Values.db.NMS_DB_NAME | quote }}
+            - name: APP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_USER
+            - name: APP_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASS
+         volumeMounts:
+            - name: random-mac-secret
+              mountPath: /opt/secret/RANDOM_MAC_KEY
+              subPath: RANDOM_MAC_KEY
+            - name: shared-mac
+              mountPath: /shared
+      
        - name: extract-tns-auth
          image: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/alpine:latest # alpine
          imagePullPolicy: Always
@@ -79,7 +108,12 @@ spec:
             secretName: tns-config-auth
         - name: tns-extracted
           emptyDir: {}
+        #- name: shared-mac
+        #  persistentVolumeClaim:
+        #    claimName: shared-mac-pvc
+        - name: random-mac-secret
+          secret:
+            secretName: random-mac-secret
         - name: shared-mac
-          persistentVolumeClaim:
-            claimName: shared-mac-pvc
+          emptyDir: {}
           

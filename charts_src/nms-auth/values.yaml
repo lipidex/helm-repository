@@ -9,6 +9,7 @@ app:
 
 # --- Configurations (these will be injected into property files) ---
 db:
+  DB_HELPER_IMAGE: 927974570874.dkr.ecr.eu-west-1.amazonaws.com/smdc/db-helper:latest
   NMS_DB_NAME: NMS5UX
   ORACLE_HOST: database
   ORACLE_PORT: "1521"
